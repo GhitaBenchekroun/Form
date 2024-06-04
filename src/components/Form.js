@@ -149,8 +149,10 @@ function Form() {
     // }
     if (lead.jobId === "a0Y9O0000003TS5UAM") {
       formData.append("jobName", "Associate");
-    } else if (lead.jobId === "a0Y9O0000003lFJUAY") {
-      formData.append("jobName", "Consultant");
+    } else if (lead.jobId === "a0Y9O0000014nSzUAI") {
+      formData.append("jobName", "Technical Consultant - Commerce Cloud");
+    }else if (lead.jobId === "a0Y9O0000003lFJUAY") {
+      formData.append("jobName", "Technical Consultant - Sales Cloud");
     }
     console.log("educationalLevel__c", lead.educationalLevel__c);
     console.log("yearOfExperience__c", lead.yearOfExperience__c);
@@ -484,6 +486,8 @@ function Form() {
                     id="typeCandidat"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     required
+                    onInvalid={(e) => e.target.setCustomValidity('Please fill the field')}
+                    onInput={(e) => e.target.setCustomValidity('')}
                   >
                     <option value="helo" hidden>
                       Select candidate type
@@ -506,6 +510,8 @@ function Form() {
                     id="job"
                     className="bg-gray-50 border  border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     required
+                    onInvalid={(e) => e.target.setCustomValidity('Please fill the field')}
+                    onInput={(e) => e.target.setCustomValidity('')}
                   >
                     <option value="" hidden>
                       Select a job{" "}
@@ -548,6 +554,9 @@ function Form() {
                     value={lead.LinkedInAccount__c}
                     className="bg-gray-50 border mb-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     name="LinkedInAccount__c"
+                    required
+                    onInvalid={(e) => e.target.setCustomValidity('Linekdin Account required')}
+                    onInput={(e) => e.target.setCustomValidity('')}
                   />
                 </div>
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0 mt-6 b">
@@ -563,6 +572,9 @@ function Form() {
                     value={lead.yearOfExperience__c}
                     className="bg-gray-50 border mb-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     name="yearOfExperience__c"
+                    required
+                    onInvalid={(e) => e.target.setCustomValidity('Please fill the field')}
+                    onInput={(e) => e.target.setCustomValidity('')}
                   />
 
                   <div className="text-red-500 text-sm mt-1">
@@ -584,6 +596,8 @@ function Form() {
                     id="job"
                     className="bg-gray-50 border  border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     required
+                    onInvalid={(e) => e.target.setCustomValidity('Please fill the field')}
+                    onInput={(e) => e.target.setCustomValidity('')}
                   >
                     <option value="" hidden>
                       Select your educational level{" "}
@@ -806,7 +820,11 @@ function Form() {
                                     )
                                   }
                                   className="block  py-2.5 mx-3 mb-3 px-2  w-1/2 text-sm text-gray-700 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-700 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+                                  required
+                                  onInvalid={(e) => e.target.setCustomValidity('Please select a certification type from the list.')}
+                                  onInput={(e) => e.target.setCustomValidity('')}
                                 >
+                                
                                   <option value="" hidden>
                                     Select certification type
                                   </option>
@@ -816,28 +834,14 @@ function Form() {
                                     </option>
                                   ))}
                                 </select>
-                                {/* <div className="w-1/4  ">
-                                <input
-      type="date"
-      value={certification.date}
-      onChange={(e) => updateCertificationDate(index, e.target.value)}
-      className="w-full mt-4"
-      placeholder="Certification Date"
-    />
-    </div> */}
+                                
                               </div>
                             </div>
                           ))}
 
                           <div className="element">
                           {showDetails && (
-                            // <button
-                            //   type="button"
-                            //   className=" ml-96 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-                            //   onClick={addCertification}
-                            // >
-                            //   Add Certification
-                            // </button>
+                           
 
                             <button
                             type="button"
@@ -869,6 +873,7 @@ function Form() {
                                 value={lead.lastName}
                                 className="bg-gray-50 border mb-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 name="lastName"
+                                required
                               />
                             </div>
                           )}
