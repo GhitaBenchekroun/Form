@@ -1,0 +1,13 @@
+.buttonelement {
+  color: black;
+  font-weight: 600;
+  border-radius: 30px;
+  font-size:15px;
+  padding: 8px;
+  font-family: 'Poppins', Helvetica, Arial, Lucida, sans-serif;
+}
+
+.buttonelement :hover {
+  background-color: '#05a88b';
+  color: white;
+}
