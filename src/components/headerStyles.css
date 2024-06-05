@@ -1,5 +1,5 @@
 .buttonelement {
-  color: black;
+  color: gray;
   font-weight: 600;
   border-radius: 30px;
   font-size:15px;
@@ -8,6 +8,8 @@
 }
 
 .buttonelement :hover {
-  background-color: '#05a88b';
+  background-color: #05a88b;
   color: white;
 }
+
+

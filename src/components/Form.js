@@ -35,6 +35,8 @@ function Form() {
   const [phoneError, setPhoneError] = useState("");
   const [experienceError, setExperienceError] = useState("");
 
+
+
   //let extracted = false;
 
   const certifications = [
@@ -465,6 +467,7 @@ function Form() {
       return { ...prevLead, Skills: updatedSkills };
     });
   };
+
   
   const deleteCertification = (index) => {
     setLead((prevLead) => {
@@ -506,7 +509,7 @@ function Form() {
                     htmlFor="typeCandidat"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Type de candidat{" "}
+                        Candidate type : {" "}
                   </label>
                   <select
                     name="typeCandidat"
