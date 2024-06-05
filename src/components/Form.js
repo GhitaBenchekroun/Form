@@ -29,7 +29,7 @@ function Form() {
   const [showDetails, setShowDetails] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isExtracted, setIsExtracted] = useState(false);
-  const [fileName, setFileName] = useState(""); 
+  const [fileName, setFileName] = useState("");
   const [message, setMessage] = useState(" ");
   const [email, setEmail] = useState("yourmail@mail.com");
   const [phoneError, setPhoneError] = useState("");
@@ -151,7 +151,7 @@ function Form() {
       formData.append("jobName", "Associate");
     } else if (lead.jobId === "a0Y9O0000014nSzUAI") {
       formData.append("jobName", "Technical Consultant - Commerce Cloud");
-    }else if (lead.jobId === "a0Y9O0000003lFJUAY") {
+    } else if (lead.jobId === "a0Y9O0000003lFJUAY") {
       formData.append("jobName", "Technical Consultant - Sales Cloud");
     }
     console.log("educationalLevel__c", lead.educationalLevel__c);
@@ -220,13 +220,12 @@ function Form() {
         setTimeout(() => {
           window.location.reload();
         }, 2000);
-  
       })
       .catch((error) => {
         // Handle errors that have been thrown with detailed information
         console.error("Error:", error.message);
         // Display an error notification
-        toast.error('Error occured while submtting the form', {
+        toast.error("Error occured while submtting the form", {
           position: "top-center",
           autoClose: 1000,
           hideProgressBar: false,
@@ -486,8 +485,10 @@ function Form() {
                     id="typeCandidat"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     required
-                    onInvalid={(e) => e.target.setCustomValidity('Please fill the field')}
-                    onInput={(e) => e.target.setCustomValidity('')}
+                    onInvalid={(e) =>
+                      e.target.setCustomValidity("Please fill the field")
+                    }
+                    onInput={(e) => e.target.setCustomValidity("")}
                   >
                     <option value="helo" hidden>
                       Select candidate type
@@ -510,8 +511,10 @@ function Form() {
                     id="job"
                     className="bg-gray-50 border  border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     required
-                    onInvalid={(e) => e.target.setCustomValidity('Please fill the field')}
-                    onInput={(e) => e.target.setCustomValidity('')}
+                    onInvalid={(e) =>
+                      e.target.setCustomValidity("Please fill the field")
+                    }
+                    onInput={(e) => e.target.setCustomValidity("")}
                   >
                     <option value="" hidden>
                       Select a job{" "}
@@ -555,8 +558,10 @@ function Form() {
                     className="bg-gray-50 border mb-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     name="LinkedInAccount__c"
                     required
-                    onInvalid={(e) => e.target.setCustomValidity('Linekdin Account required')}
-                    onInput={(e) => e.target.setCustomValidity('')}
+                    onInvalid={(e) =>
+                      e.target.setCustomValidity("Linekdin Account required")
+                    }
+                    onInput={(e) => e.target.setCustomValidity("")}
                   />
                 </div>
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0 mt-6 b">
@@ -573,8 +578,10 @@ function Form() {
                     className="bg-gray-50 border mb-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     name="yearOfExperience__c"
                     required
-                    onInvalid={(e) => e.target.setCustomValidity('Please fill the field')}
-                    onInput={(e) => e.target.setCustomValidity('')}
+                    onInvalid={(e) =>
+                      e.target.setCustomValidity("Please fill the field")
+                    }
+                    onInput={(e) => e.target.setCustomValidity("")}
                   />
 
                   <div className="text-red-500 text-sm mt-1">
@@ -596,8 +603,10 @@ function Form() {
                     id="job"
                     className="bg-gray-50 border  border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     required
-                    onInvalid={(e) => e.target.setCustomValidity('Please fill the field')}
-                    onInput={(e) => e.target.setCustomValidity('')}
+                    onInvalid={(e) =>
+                      e.target.setCustomValidity("Please fill the field")
+                    }
+                    onInput={(e) => e.target.setCustomValidity("")}
                   >
                     <option value="" hidden>
                       Select your educational level{" "}
@@ -608,7 +617,7 @@ function Form() {
                   </select>
                 </div>
               </div>
-{/* 
+              {/* 
               <label
                 htmlFor="cv"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -626,52 +635,48 @@ function Form() {
                 required
               /> */}
 
-<label
+              <label
                 htmlFor="cv"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 CV
               </label>
-<div class="file-upload-form">
-  
-  <label for="file" class="file-upload-label">
-    <div class="file-upload-design">
-      <svg viewBox="0 0 640 512" height="1em">
-        <path
-          d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V392c0 13.3 10.7 24 24 24s24-10.7 24-24V257.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"
-        ></path>
-      </svg>
-    
-      <span class="browse-button">Upload File</span>
-    </div>
-  
-   <input
-                type="file"
-                id="file"
-                name="cv"
-                accept="application/pdf"
-                onChange={handleFileChange}
-                ref={fileInputRef}
-                required
-/>
-</label> 
-<div className=" ml-4 font-semibold">{fileName && <p>Selected file: {fileName}</p>}</div>
+              <div class="file-upload-form">
+                <label for="file" class="file-upload-label">
+                  <div class="file-upload-design">
+                    <svg viewBox="0 0 640 512" height="1em">
+                      <path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V392c0 13.3 10.7 24 24 24s24-10.7 24-24V257.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"></path>
+                    </svg>
 
-<button
-                className="bg-niagara-600 text-white font-semibold py-2 px-4 rounded-full mx-8 ms-40 enabled:hover:border-gray-400 disabled:opacity-75"
-                type="type"
-                style={{
-                  backgroundColor: "#05A88B"
-                }}
-                onClick={handleOnSubmit}
-                disabled={isLoading}
-              >
-                Verify my Resume
-              </button>          
-</div>
+                    <span class="browse-button">Upload File</span>
+                  </div>
 
+                  <input
+                    type="file"
+                    id="file"
+                    name="cv"
+                    accept="application/pdf"
+                    onChange={handleFileChange}
+                    ref={fileInputRef}
+                    required
+                  />
+                </label>
+                <div className=" ml-4 font-semibold">
+                  {fileName && <p>Selected file: {fileName}</p>}
+                </div>
 
-            
+                <button
+                  className="bg-niagara-600 text-white font-semibold py-2 px-4 rounded-full mx-8 ms-40 enabled:hover:border-gray-400 disabled:opacity-75"
+                  type="type"
+                  style={{
+                    backgroundColor: "#05A88B",
+                  }}
+                  onClick={handleOnSubmit}
+                  disabled={isLoading}
+                >
+                  Verify my Resume
+                </button>
+              </div>
 
               <div className="flex justify-center items-center">
                 {isLoading && (
@@ -747,6 +752,15 @@ function Form() {
                                     //class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     variant="static"
                                     label="Select Version"
+                                    required
+                                    onInvalid={(e) =>
+                                      e.target.setCustomValidity(
+                                        "Please select a skill type "
+                                      )
+                                    }
+                                    onInput={(e) =>
+                                      e.target.setCustomValidity("")
+                                    }
                                   >
                                     <option value="" hidden>
                                       Select skill type
@@ -762,24 +776,24 @@ function Form() {
                             </div>
                           ))}
                           <div class="element">
+                            {showDetails && (
+                              // <button
+                              //   type="button"
+                              //   className=" mb-5 mt-5 ml-96 mr-0 bg-transparent hover:bg-blue-500  font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                              //   onClick={addSkill}
+                              // >
+                              //   Add Skill
+                              // </button>
 
-                          {showDetails && (
-                            // <button
-                            //   type="button"
-                            //   className=" mb-5 mt-5 ml-96 mr-0 bg-transparent hover:bg-blue-500  font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-                            //   onClick={addSkill}
-                            // >
-                            //   Add Skill
-                            // </button>
-
-                            <button
-                            type="button"
-                            // className=" mb-5 mt-5 ml-96 mr-0 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-                            class="buttonele"
-                          >
-                            Add Skill
-                          </button>
-                          )}
+                              <button
+                                type="button"
+                                // className=" mb-5 mt-5 ml-96 mr-0 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                                class="buttonele"
+                                onClick={addSkill}
+                              >
+                                Add Skill
+                              </button>
+                            )}
                           </div>
                         </div>
                       );
@@ -787,10 +801,7 @@ function Form() {
 
                     if (key === "Certifications") {
                       return (
-                        <div
-                          key={key}
-                          className="flex flex-wrap  mb-2 w-full "
-                        >
+                        <div key={key} className="flex flex-wrap  mb-2 w-full ">
                           {lead.Certifications.map((certification, index) => (
                             <div
                               key={`Certification-${index}`}
@@ -821,10 +832,15 @@ function Form() {
                                   }
                                   className="block  py-2.5 mx-3 mb-3 px-2  w-1/2 text-sm text-gray-700 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-700 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
                                   required
-                                  onInvalid={(e) => e.target.setCustomValidity('Please select a certification type from the list.')}
-                                  onInput={(e) => e.target.setCustomValidity('')}
+                                  onInvalid={(e) =>
+                                    e.target.setCustomValidity(
+                                      "Please select a certification type from the list."
+                                    )
+                                  }
+                                  onInput={(e) =>
+                                    e.target.setCustomValidity("")
+                                  }
                                 >
-                                
                                   <option value="" hidden>
                                     Select certification type
                                   </option>
@@ -834,24 +850,21 @@ function Form() {
                                     </option>
                                   ))}
                                 </select>
-                                
                               </div>
                             </div>
                           ))}
 
                           <div className="element">
-                          {showDetails && (
-                           
-
-                            <button
-                            type="button"
-                            className="buttonele"
-                            onClick={addCertification}
-                          >
-                            Add Certification
-                          </button>
-                          )}
-                        </div>
+                            {showDetails && (
+                              <button
+                                type="button"
+                                className="buttonele"
+                                onClick={addCertification}
+                              >
+                                Add Certification
+                              </button>
+                            )}
+                          </div>
                         </div>
                       );
                     }
@@ -936,21 +949,20 @@ function Form() {
                 </div>
               </div>
 
-            
               {showDetails && (
-      <div className="w-full flex justify-center">
-        <button
-          type="submit"
-          onSubmit={handleSubmit}
-          className="w-4/5 text-white font-bold py-2 px-4 text-lg rounded mt-6"
-          style={{
-            backgroundColor: "#05A88B"
-          }}
-        >
-          Submit
-        </button>
-      </div>
-    )}
+                <div className="w-full flex justify-center">
+                  <button
+                    type="submit"
+                    onSubmit={handleSubmit}
+                    className="w-4/5 text-white font-bold py-2 px-4 text-lg rounded mt-6"
+                    style={{
+                      backgroundColor: "#05A88B",
+                    }}
+                  >
+                    Submit
+                  </button>
+                </div>
+              )}
             </form>
           </div>
         </div>
