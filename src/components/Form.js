@@ -34,8 +34,7 @@ function Form() {
   const [email, setEmail] = useState("yourmail@mail.com");
   const [phoneError, setPhoneError] = useState("");
   const [experienceError, setExperienceError] = useState("");
-
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   //let extracted = false;
 
@@ -66,11 +65,24 @@ function Form() {
   //   softSkills: "Soft Skills",
   // };
 
+  const handleCertificationNameChange = (index, newName) => {
+    setLead((prevLead) => {
+      const updatedCertifications = prevLead.Certifications.map(
+        (certification, idx) => {
+          if (idx === index) {
+            return { ...certification, name: newName, isInputActive: true };
+          }
+          return certification;
+        }
+      );
+      return { ...prevLead, Certifications: updatedCertifications };
+    });
+  };
+
   function handleChange(e) {
     const { name, value } = e.target;
     const re = /^[0-9\b]+$/;
-    const phoneRegex = /^(07|06)\d{8}$|^212\d{9}$|^\+212\d{9}$/
-
+    const phoneRegex = /^(07|06)\d{8}$|^212\d{9}$|^\+212\d{9}$/;
 
     if (name === "email") {
       console.log("heloo");
@@ -103,15 +115,15 @@ function Form() {
       const cleanedValue = value.replace(/\s+/g, "");
       const validPhone = phoneRegex.test(cleanedValue);
 
-    //   const cleanedValue = value.replace(/\s+/g, "");
-    // const isNumeric = re.test(cleanedValue);
+      //   const cleanedValue = value.replace(/\s+/g, "");
+      // const isNumeric = re.test(cleanedValue);
 
-    // Set the error message if the value is not numeric or not matching the regex pattern
-    if (!validPhone) {
-      setPhoneError("Invalid phone format.");
-    } else {
-      setPhoneError(""); // Clear error message when the phone is valid
-    }
+      // Set the error message if the value is not numeric or not matching the regex pattern
+      if (!validPhone) {
+        setPhoneError("Invalid phone format.");
+      } else {
+        setPhoneError(""); // Clear error message when the phone is valid
+      }
     }
     if (name === "yearOfExperience__c") {
       const cleanedValue = value.replace(/\s+/g, "");
@@ -154,7 +166,7 @@ function Form() {
       return;
     }
     console.log("certification", lead.Certifications);
-
+    setIsSubmitting(true);
     // Construct the endpoint URL
     const endpoint = "http://localhost:3001/submit-form";
     const formData = new FormData();
@@ -186,10 +198,18 @@ function Form() {
     if (lead.Certifications.length === 0) {
       formData.append("CertificationsEmpty", "true");
     } else {
+      // lead.Certifications.forEach((certification, index) => {
+      //   formData.append(`Certifications[${index}][name]`, certification.type);
+      //   formData.append(`Certifications[${index}][type]`, certification.type);
+      // });
+
       lead.Certifications.forEach((certification, index) => {
-        formData.append(`Certifications[${index}][name]`, certification.type);
-        formData.append(`Certifications[${index}][type]`, certification.type);
-        //formData.append(`Certifications[${index}][date]`, certification.date);
+        const certName = certification.type ? certification.name : "";
+        const certType = certification.type
+          ? certification.type
+          : certification.name;
+        formData.append(`Certifications[${index}][name]`, certName);
+        formData.append(`Certifications[${index}][type]`, certType);
       });
     }
     // Append each skill object as a separate entry in the FormData
@@ -251,6 +271,9 @@ function Form() {
           theme: "colored",
           transition: Bounce,
         });
+      })
+      .finally(() => {
+        setIsSubmitting(false); // Enable the submit button after form submission is complete
       });
   }
 
@@ -344,7 +367,6 @@ function Form() {
           }))
         : [];
 
-      // setLead({ ...lead, extractedData: response.data ,skillsType: skillsWithTypes, });// Transform the skills array
       // Transform the skills into a structure with types, if necessary
 
       setLead((prevLead) => ({
@@ -368,50 +390,72 @@ function Form() {
   };
 
   const updateCertificationName = (index, newCertification) => {
-    console.log("am updated!!!!!");
-    setLead((prevLead) => {
-      // Clone the Certifications array
-      const updatedCertifications = [...prevLead.Certifications];
+    // console.log("am updated!!!!!");
+    // setLead((prevLead) => {
+    //   // Clone the Certifications array
+    //   const updatedCertifications = [...prevLead.Certifications];
 
-      // Update the specific certification at the index
-      updatedCertifications[index] = newCertification;
-      console.log("updatedCertifications ", updatedCertifications[index]);
-      // Return the updated state
+    //   // Update the specific certification at the index
+    //   updatedCertifications[index] = newCertification;
+    //   console.log("updatedCertifications ", updatedCertifications[index]);
+    //   // Return the updated state
+    //   return { ...prevLead, Certifications: updatedCertifications };
+    // });
+
+    setLead((prevLead) => {
+      const updatedCertifications = prevLead.Certifications.map(
+        (certification, idx) => {
+          if (idx === index) {
+            return {
+              ...certification,
+              name: newCertification,
+              type: "", // Reset the select value
+              isSelectDisabled: true, // Disable select if name is entered
+              isInputDisabled: false,
+            };
+          }
+          return certification;
+        }
+      );
       return { ...prevLead, Certifications: updatedCertifications };
     });
   };
 
-  /*
-  const updateCertificationDate = (index, newDate) => {
-    setLead((prevLead) => {
-      const updatedCertifications = prevLead.Certifications.map((certification, idx) => {
-        if (idx === index) {
-          return { ...certification, date: newDate };
-        }
-        return certification;
-      });
-      return { ...prevLead, Certifications: updatedCertifications };
-    });
-  };*/
-
   const handleCertifTypeChange = (index, selectedType) => {
     console.log("certif type", selectedType);
-    setLead((prevLead) => {
-      const updatedCertifs = prevLead.Certifications.map(
-        (certif, skillIndex) => {
-          if (skillIndex === index) {
-            return { ...certif, type: selectedType };
-          }
+    // setLead((prevLead) => {
+    //   const updatedCertifs = prevLead.Certifications.map(
+    //     (certif, skillIndex) => {
+    //       if (skillIndex === index) {
+    //         return { ...certif, type: selectedType };
+    //       }
 
-          return certif;
+    //       return certif;
+    //     }
+    //   );
+
+    //   return {
+    //     ...prevLead,
+
+    //     Certifications: updatedCertifs,
+    //   };
+    // });
+    setLead((prevLead) => {
+      const updatedCertifications = prevLead.Certifications.map(
+        (certification, idx) => {
+          if (idx === index) {
+            return {
+              ...certification,
+              name: "", // Reset the input value
+              type: selectedType,
+              isInputDisabled: true,
+              isSelectDisabled: false,
+            };
+          }
+          return certification;
         }
       );
-
-      return {
-        ...prevLead,
-
-        Certifications: updatedCertifs,
-      };
+      return { ...prevLead, Certifications: updatedCertifications };
     });
   };
 
@@ -460,7 +504,6 @@ function Form() {
     }));
   };
 
-
   const deleteSkill = (index) => {
     setLead((prevLead) => {
       const updatedSkills = prevLead.Skills.filter((_, i) => i !== index);
@@ -468,14 +511,27 @@ function Form() {
     });
   };
 
-  
   const deleteCertification = (index) => {
     setLead((prevLead) => {
-      const updatedCertifications = prevLead.Certifications.filter((_, i) => i !== index);
+      const updatedCertifications = prevLead.Certifications.filter(
+        (_, i) => i !== index
+      );
       return { ...prevLead, Certifications: updatedCertifications };
     });
   };
-  
+  const handleCertifTypeClick = (index) => {
+    setLead((prevLead) => {
+      const updatedCertifications = prevLead.Certifications.map(
+        (certification, idx) => {
+          if (idx === index) {
+            return { ...certification, isInputActive: false };
+          }
+          return certification;
+        }
+      );
+      return { ...prevLead, Certifications: updatedCertifications };
+    });
+  };
 
   return (
     // bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/conference.jpg')]
@@ -509,7 +565,7 @@ function Form() {
                     htmlFor="typeCandidat"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                        Candidate type : {" "}
+                    Candidate type :{" "}
                   </label>
                   <select
                     name="typeCandidat"
@@ -671,11 +727,10 @@ function Form() {
               <label
                 htmlFor="cv"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                CV
-              </label>
-              <div class="file-upload-form">
-                <label for="file" class="file-upload-label">
+              ></label>
+
+              <div class="file-upload-form ">
+                <label for="file" class="file-upload-label  ">
                   <div class="file-upload-design">
                     <svg viewBox="0 0 640 512" height="1em">
                       <path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V392c0 13.3 10.7 24 24 24s24-10.7 24-24V257.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"></path>
@@ -697,20 +752,20 @@ function Form() {
                 <div className=" ml-4 font-semibold">
                   {fileName && <p>{fileName}</p>}
                 </div>
-
+              </div>
+              <div className="flex flex-col items-center ">
                 <button
-                  className="bg-niagara-600 text-white font-semibold py-2 px-4 rounded-full  ms-20 enabled:hover:border-gray-400 disabled:opacity-75"
+                  className=" text-white font-semibold py-4 px-8 rounded-full  ms-20 enabled:hover:border-gray-400 disabled:opacity-75 mr-20 mt-4 text-xl "
                   type="type"
                   style={{
                     backgroundColor: "#05A88B",
                   }}
                   onClick={handleOnSubmit}
-                  disabled={isLoading}
+                  disabled={isLoading }
                 >
                   Verify my Resume
                 </button>
               </div>
-
               <div className="flex justify-center items-center">
                 {isLoading && (
                   // <RotatingLines
@@ -772,10 +827,14 @@ function Form() {
                                   className="bg-gray-50 border mb-2 ml-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                   required
                                   onInvalid={(e) =>
-                                    e.target.setCustomValidity("Please fill the field")
+                                    e.target.setCustomValidity(
+                                      "Please fill the field"
+                                    )
                                   }
-                                  onInput={(e) => e.target.setCustomValidity("")}
-                               />
+                                  onInput={(e) =>
+                                    e.target.setCustomValidity("")
+                                  }
+                                />
                                 <div className="flex w-72 flex-col  gap-6">
                                   <select
                                     value={skill.type}
@@ -817,37 +876,41 @@ function Form() {
         >
           Delete
         </button> */}
-<div className="flex w-36 bflex-col ">
-<button class="deleteButton"
- type="button"
- onClick={() => deleteSkill(index)}>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 50 59"
-    class="bin"
-  >
-    <path
-      fill="#B5BAC1"
-      d="M0 7.5C0 5.01472 2.01472 3 4.5 3H45.5C47.9853 3 50 5.01472 50 7.5V7.5C50 8.32843 49.3284 9 48.5 9H1.5C0.671571 9 0 8.32843 0 7.5V7.5Z"
-    ></path>
-    <path
-      fill="#B5BAC1"
-      d="M17 3C17 1.34315 18.3431 0 20 0H29.3125C30.9694 0 32.3125 1.34315 32.3125 3V3H17V3Z"
-    ></path>
-    <path
-      fill="#B5BAC1"
-      d="M2.18565 18.0974C2.08466 15.821 3.903 13.9202 6.18172 13.9202H43.8189C46.0976 13.9202 47.916 15.821 47.815 18.0975L46.1699 55.1775C46.0751 57.3155 44.314 59.0002 42.1739 59.0002H7.8268C5.68661 59.0002 3.92559 57.3155 3.83073 55.1775L2.18565 18.0974ZM18.0003 49.5402C16.6196 49.5402 15.5003 48.4209 15.5003 47.0402V24.9602C15.5003 23.5795 16.6196 22.4602 18.0003 22.4602C19.381 22.4602 20.5003 23.5795 20.5003 24.9602V47.0402C20.5003 48.4209 19.381 49.5402 18.0003 49.5402ZM29.5003 47.0402C29.5003 48.4209 30.6196 49.5402 32.0003 49.5402C33.381 49.5402 34.5003 48.4209 34.5003 47.0402V24.9602C34.5003 23.5795 33.381 22.4602 32.0003 22.4602C30.6196 22.4602 29.5003 23.5795 29.5003 24.9602V47.0402Z"
-      clip-rule="evenodd"
-      fill-rule="evenodd"
-    ></path>
-    <path fill="#B5BAC1" d="M2 13H48L47.6742 21.28H2.32031L2 13Z"></path>
-  </svg>
+                                <div className="flex w-36 bflex-col ">
+                                  <button
+                                    class="deleteButton"
+                                    type="button"
+                                    onClick={() => deleteSkill(index)}
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      fill="none"
+                                      viewBox="0 0 50 59"
+                                      class="bin"
+                                    >
+                                      <path
+                                        fill="#B5BAC1"
+                                        d="M0 7.5C0 5.01472 2.01472 3 4.5 3H45.5C47.9853 3 50 5.01472 50 7.5V7.5C50 8.32843 49.3284 9 48.5 9H1.5C0.671571 9 0 8.32843 0 7.5V7.5Z"
+                                      ></path>
+                                      <path
+                                        fill="#B5BAC1"
+                                        d="M17 3C17 1.34315 18.3431 0 20 0H29.3125C30.9694 0 32.3125 1.34315 32.3125 3V3H17V3Z"
+                                      ></path>
+                                      <path
+                                        fill="#B5BAC1"
+                                        d="M2.18565 18.0974C2.08466 15.821 3.903 13.9202 6.18172 13.9202H43.8189C46.0976 13.9202 47.916 15.821 47.815 18.0975L46.1699 55.1775C46.0751 57.3155 44.314 59.0002 42.1739 59.0002H7.8268C5.68661 59.0002 3.92559 57.3155 3.83073 55.1775L2.18565 18.0974ZM18.0003 49.5402C16.6196 49.5402 15.5003 48.4209 15.5003 47.0402V24.9602C15.5003 23.5795 16.6196 22.4602 18.0003 22.4602C19.381 22.4602 20.5003 23.5795 20.5003 24.9602V47.0402C20.5003 48.4209 19.381 49.5402 18.0003 49.5402ZM29.5003 47.0402C29.5003 48.4209 30.6196 49.5402 32.0003 49.5402C33.381 49.5402 34.5003 48.4209 34.5003 47.0402V24.9602C34.5003 23.5795 33.381 22.4602 32.0003 22.4602C30.6196 22.4602 29.5003 23.5795 29.5003 24.9602V47.0402Z"
+                                        clip-rule="evenodd"
+                                        fill-rule="evenodd"
+                                      ></path>
+                                      <path
+                                        fill="#B5BAC1"
+                                        d="M2 13H48L47.6742 21.28H2.32031L2 13Z"
+                                      ></path>
+                                    </svg>
 
-  <span class="tooltip">Delete</span>
-</button>
-</div>
-
+                                    <span class="tooltip">Delete</span>
+                                  </button>
+                                </div>
                               </div>
                             </div>
                           ))}
@@ -897,6 +960,7 @@ function Form() {
                                     )
                                   }
                                   className="bg-gray-50 border mb-2 ml-2 w-2/5 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                  disabled={certification.isInputDisabled}
                                 />
                                 <select
                                   value={certification.type}
@@ -916,6 +980,7 @@ function Form() {
                                   onInput={(e) =>
                                     e.target.setCustomValidity("")
                                   }
+                                  disabled={certification.isSelectDisabled}
                                 >
                                   <option value="" hidden>
                                     Select certification type
@@ -927,37 +992,41 @@ function Form() {
                                   ))}
                                 </select>
                                 <div className="flex w-36 bflex-col ">
-<button class="deleteButton"
-  type="button"
-  onClick={() => deleteCertification(index)}>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 50 59"
-    class="bin"
-  >
-    <path
-      fill="#B5BAC1"
-      d="M0 7.5C0 5.01472 2.01472 3 4.5 3H45.5C47.9853 3 50 5.01472 50 7.5V7.5C50 8.32843 49.3284 9 48.5 9H1.5C0.671571 9 0 8.32843 0 7.5V7.5Z"
-    ></path>
-    <path
-      fill="#B5BAC1"
-      d="M17 3C17 1.34315 18.3431 0 20 0H29.3125C30.9694 0 32.3125 1.34315 32.3125 3V3H17V3Z"
-    ></path>
-    <path
-      fill="#B5BAC1"
-      d="M2.18565 18.0974C2.08466 15.821 3.903 13.9202 6.18172 13.9202H43.8189C46.0976 13.9202 47.916 15.821 47.815 18.0975L46.1699 55.1775C46.0751 57.3155 44.314 59.0002 42.1739 59.0002H7.8268C5.68661 59.0002 3.92559 57.3155 3.83073 55.1775L2.18565 18.0974ZM18.0003 49.5402C16.6196 49.5402 15.5003 48.4209 15.5003 47.0402V24.9602C15.5003 23.5795 16.6196 22.4602 18.0003 22.4602C19.381 22.4602 20.5003 23.5795 20.5003 24.9602V47.0402C20.5003 48.4209 19.381 49.5402 18.0003 49.5402ZM29.5003 47.0402C29.5003 48.4209 30.6196 49.5402 32.0003 49.5402C33.381 49.5402 34.5003 48.4209 34.5003 47.0402V24.9602C34.5003 23.5795 33.381 22.4602 32.0003 22.4602C30.6196 22.4602 29.5003 23.5795 29.5003 24.9602V47.0402Z"
-      clip-rule="evenodd"
-      fill-rule="evenodd"
-    ></path>
-    <path fill="#B5BAC1" d="M2 13H48L47.6742 21.28H2.32031L2 13Z"></path>
-  </svg>
+                                  <button
+                                    class="deleteButton"
+                                    type="button"
+                                    onClick={() => deleteCertification(index)}
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      fill="none"
+                                      viewBox="0 0 50 59"
+                                      class="bin"
+                                    >
+                                      <path
+                                        fill="#B5BAC1"
+                                        d="M0 7.5C0 5.01472 2.01472 3 4.5 3H45.5C47.9853 3 50 5.01472 50 7.5V7.5C50 8.32843 49.3284 9 48.5 9H1.5C0.671571 9 0 8.32843 0 7.5V7.5Z"
+                                      ></path>
+                                      <path
+                                        fill="#B5BAC1"
+                                        d="M17 3C17 1.34315 18.3431 0 20 0H29.3125C30.9694 0 32.3125 1.34315 32.3125 3V3H17V3Z"
+                                      ></path>
+                                      <path
+                                        fill="#B5BAC1"
+                                        d="M2.18565 18.0974C2.08466 15.821 3.903 13.9202 6.18172 13.9202H43.8189C46.0976 13.9202 47.916 15.821 47.815 18.0975L46.1699 55.1775C46.0751 57.3155 44.314 59.0002 42.1739 59.0002H7.8268C5.68661 59.0002 3.92559 57.3155 3.83073 55.1775L2.18565 18.0974ZM18.0003 49.5402C16.6196 49.5402 15.5003 48.4209 15.5003 47.0402V24.9602C15.5003 23.5795 16.6196 22.4602 18.0003 22.4602C19.381 22.4602 20.5003 23.5795 20.5003 24.9602V47.0402C20.5003 48.4209 19.381 49.5402 18.0003 49.5402ZM29.5003 47.0402C29.5003 48.4209 30.6196 49.5402 32.0003 49.5402C33.381 49.5402 34.5003 48.4209 34.5003 47.0402V24.9602C34.5003 23.5795 33.381 22.4602 32.0003 22.4602C30.6196 22.4602 29.5003 23.5795 29.5003 24.9602V47.0402Z"
+                                        clip-rule="evenodd"
+                                        fill-rule="evenodd"
+                                      ></path>
+                                      <path
+                                        fill="#B5BAC1"
+                                        d="M2 13H48L47.6742 21.28H2.32031L2 13Z"
+                                      ></path>
+                                    </svg>
 
-  <span class="tooltip">Delete</span>
-</button>
-</div>
+                                    <span class="tooltip">Delete</span>
+                                  </button>
+                                </div>
                               </div>
-                              
                             </div>
                           ))}
 
@@ -1065,6 +1134,7 @@ function Form() {
                     style={{
                       backgroundColor: "#05A88B",
                     }}
+                    disabled={isSubmitting}
                   >
                     Submit
                   </button>
