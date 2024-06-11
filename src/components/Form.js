@@ -35,6 +35,8 @@ function Form() {
   const [phoneError, setPhoneError] = useState("");
   const [experienceError, setExperienceError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [filteredJobs, setFilteredJobs] = useState([]);
+
 
   //let extracted = false;
 
@@ -98,26 +100,9 @@ function Form() {
         setMessage("");
       }
     } else if (name === "Phone") {
-      // const cleanedValue = value.replace(/\s+/g, "");
-      // console.log("cleanedValue", cleanedValue);
-      // const isNumeric = re.test(cleanedValue);
-      // const isValidLength =
-      //   cleanedValue.length === 10 || cleanedValue.length === 12;
 
-      // // Set the error message if the value is not numeric or not the right length
-      // if (!isNumeric) {
-      //   setPhoneError("Phone number must contain only numeric values.");
-      // } else if (!isValidLength) {
-      //   setPhoneError("Phone number must have 10 or 12 digits.");
-      // } else {
-      //   setPhoneError(""); // Clear error message when the phone is valid
-      // }
       const cleanedValue = value.replace(/\s+/g, "");
       const validPhone = phoneRegex.test(cleanedValue);
-
-      //   const cleanedValue = value.replace(/\s+/g, "");
-      // const isNumeric = re.test(cleanedValue);
-
       // Set the error message if the value is not numeric or not matching the regex pattern
       if (!validPhone) {
         setPhoneError("Invalid phone format.");
@@ -134,6 +119,22 @@ function Form() {
       } else {
         setExperienceError("");
       }
+    }if (name === "typeCandidat") {
+      setLead({ ...lead, [name]: value });
+  
+      // Filter jobs based on candidate type
+      if (value === "Intern") {
+        setFilteredJobs([{ value: "a0Y9O0000003TS5UAM", label: "Associate" }]);
+      } else if (value === "Employee") {
+        setFilteredJobs([
+          { value: "a0Y9O0000014nSzUAI", label: "Technical Consultant - Commerce Cloud" },
+          { value: "a0Y9O0000003lFJUAY", label: "Technical Consultant - Sales Cloud" },
+        ]);
+      } else {
+        setFilteredJobs([]);
+      }
+    } else {
+      setLead({ ...lead, [name]: value });
     }
     setLead({ ...lead, [name]: value });
     console.log("leaaaaaaaad", lead);
@@ -608,13 +609,18 @@ function Form() {
                     <option value="" hidden>
                       Select a job{" "}
                     </option>
-                    <option value="a0Y9O0000003TS5UAM">Associate</option>
+                    {/* <option value="a0Y9O0000003TS5UAM">Associate</option>
                     <option value="a0Y9O0000014nSzUAI">
                       Technical Consultant - Commerce Cloud
                     </option>
                     <option value="a0Y9O0000003lFJUAY">
                       Technical Consultant - Sales Cloud
+                    </option> */}
+                    {filteredJobs.map((job) => (
+                    <option key={job.value} value={job.value}>
+                      {job.label}
                     </option>
+                  ))}
                   </select>
                 </div>
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0 mt-6 b">
