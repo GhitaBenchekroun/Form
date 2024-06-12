@@ -49,6 +49,7 @@ function Form() {
     "Service Cloud Consultant",
     "Experience Cloud Consultant",
     "Sales Cloud Consultant",
+    "Other"
   ];
   useEffect(() => {
     console.log("Updated lead:", lead);
@@ -424,23 +425,7 @@ function Form() {
 
   const handleCertifTypeChange = (index, selectedType) => {
     console.log("certif type", selectedType);
-    // setLead((prevLead) => {
-    //   const updatedCertifs = prevLead.Certifications.map(
-    //     (certif, skillIndex) => {
-    //       if (skillIndex === index) {
-    //         return { ...certif, type: selectedType };
-    //       }
-
-    //       return certif;
-    //     }
-    //   );
-
-    //   return {
-    //     ...prevLead,
-
-    //     Certifications: updatedCertifs,
-    //   };
-    // });
+   
     setLead((prevLead) => {
       const updatedCertifications = prevLead.Certifications.map(
         (certification, idx) => {
@@ -449,7 +434,7 @@ function Form() {
               ...certification,
               name: "", // Reset the input value
               type: selectedType,
-              isInputDisabled: true,
+              isInputDisabled: selectedType !== "Other",
               isSelectDisabled: false,
             };
           }
